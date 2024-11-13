@@ -1,0 +1,20 @@
+services:
+  apigw:
+    image: ${DOCKER_REGISTRY-}apigw
+    build:
+      context: .
+      dockerfile: APIGW/Dockerfile
+
+  cartapi:
+    image: ${DOCKER_REGISTRY-}cartapi
+    build:
+      context: .
+      dockerfile: CartAPI/Dockerfile
+
+
+  productsapi:
+    image: ${DOCKER_REGISTRY-}productsapi
+    build:
+      context: .
+      dockerfile: ProductsAPI/Dockerfile
+
