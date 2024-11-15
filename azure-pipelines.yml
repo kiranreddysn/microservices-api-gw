@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'ca65cc51-e00c-4a95-959a-3fffd59f7201'
-  imageRepository: 'kiranreddysnmicroservicesapigw'
+  imageRepository: 'ordersapi'
   containerRegistry: 'microservicestraining.azurecr.io'
   dockerfilePath: 'OrdersAPI/Dockerfile'
   tag: '$(Build.BuildId)'
