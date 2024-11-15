@@ -32,3 +32,10 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: VSPublish@0
+  inputs:
+    appType: 'web'
+    package: '$(build.artifactStagingDirectory)/**/*.zip'
+    deployToSlotOrASE: true
+    slotName: 'production'
