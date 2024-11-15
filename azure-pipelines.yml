@@ -11,9 +11,14 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'ca65cc51-e00c-4a95-959a-3fffd59f7201'
-  imageRepository: 'ordersapi'
   containerRegistry: 'microservicestraining.azurecr.io'
-  dockerfilePath: 'OrdersAPI/Dockerfile'
+
+  ordersapiImageRepository: 'ordersapi'
+  ordersapiDockerfilePath: 'OrdersAPI/Dockerfile'
+
+  ordersapigwImageRepository: 'ordersapigw'
+  ordersapigwDockerfilePath: 'OrdersAPIGW/Dockerfile'
+
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -28,15 +33,22 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-
-    - script: ls -R $(System.DefaultWorkingDirectory)
-      displayName: List files in working directory
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push ordersapigw image
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
+        repository: $(ordersapiImageRepository)
+        dockerfile: $(ordersapiDockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        buildContext: $(System.DefaultWorkingDirectory)
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Build and push OrdersAPIGW image
+      inputs:
+        command: buildAndPush
+        repository: $(ordersapigwImageRepository)
+        dockerfile: $(ordersapigwDockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         buildContext: $(System.DefaultWorkingDirectory)
         tags: |
