@@ -6,38 +6,36 @@ services:
       - "5672:5672"
     networks:
         - internal-network
-
+            
   productsapi:
-    image: ${DOCKER_REGISTRY-}productsapi
+    image: productsapi
     build:
       context: .
       dockerfile: ProductsAPI/Dockerfile
     networks:
         - internal-network
 
+
   customerapigw:
-    image: ${DOCKER_REGISTRY-}customerapigw
+    image: customerapigw
     build:
       context: .
       dockerfile: CustomerAPIGW/Dockerfile
     networks:
         - internal-network
-    depends_on:
-        - customerapi
+
 
   ordersapigw:
-    image: ${DOCKER_REGISTRY-}ordersapigw
+    image: ordersapigw
     build:
       context: .
       dockerfile: OrdersAPIGW/Dockerfile
     networks:
         - internal-network
-    depends_on:
-         - ordersapi
 
 
   customerapi:
-    image: ${DOCKER_REGISTRY-}customerapi
+    image: customerapi
     build:
       context: .
       dockerfile: CustomerAPI/Dockerfile
@@ -46,7 +44,7 @@ services:
 
 
   ordersapi:
-    image: ${DOCKER_REGISTRY-}ordersapi
+    image: ordersapi
     build:
       context: .
       dockerfile: OrdersAPI/Dockerfile
@@ -55,30 +53,23 @@ services:
 
 
   baseapigw:
-    image: ${DOCKER_REGISTRY-}baseapigw
+    image: baseapigw
     build:
       context: .
       dockerfile: BaseAPIGW/Dockerfile
+    ports:
+        - "5000:80"
     networks:
         - internal-network
-    depends_on:
-        - productsapi
-        - customerapigw
-        - ordersapigw
-        - customerapi
-        - ordersapi
-
+        
   authenticationapi:
-    image: ${DOCKER_REGISTRY-}authenticationapi
-    build:
-      context: .
-      dockerfile: AuthenticationApi/Dockerfile
-    networks:
-        - internal-network
-
+      image: authenticationapi
+      build:
+        context: .
+        dockerfile: AuthenticationApi/Dockerfile
+      networks:
+          - internal-network
 networks:
   internal-network:
     driver: bridge
-
-
 

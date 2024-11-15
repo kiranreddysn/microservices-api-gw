@@ -1,7 +1,17 @@
+using JWTAuthenticationManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCustomJwtAuthentication();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 builder.Services.AddControllers();
 builder.Configuration
@@ -9,18 +19,19 @@ builder.Configuration
 
 builder.Services.AddOcelot(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseWebSockets();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
+
+app.UseCors("CorsPolicy");
+
 await app.UseOcelot();
 
 app.MapGet("/", () => "Hello World!");

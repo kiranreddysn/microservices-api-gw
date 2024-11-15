@@ -6,7 +6,13 @@
       "serviceActions": {
         "apigw": "StartDebugging",
         "cartapi": "StartDebugging",
-        "productsapi": "StartDebugging"
+        "productsapi": "StartDebugging",
+        "customerapigw": "StartDebugging",
+        "ordersapigw": "StartDebugging",
+        "customerapi": "StartDebugging",
+        "ordersapi": "StartDebugging",
+        "baseapigw": "StartDebugging",
+        "authenticationapi": "StartDebugging"
       }
     }
   }
