@@ -19,6 +19,11 @@ variables:
   ordersapigwImageRepository: 'ordersapigw'
   ordersapigwDockerfilePath: 'OrdersAPIGW/Dockerfile'
 
+  baseapiImageRepository: 'baseapigw'
+  baseapiDockerfilePath: 'BaseAPIGW/Dockerfile'
+
+
+
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -34,7 +39,7 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push ordersapigw image
+      displayName: Build and push OrdersAPI image
       inputs:
         command: buildAndPush
         repository: $(ordersapiImageRepository)
@@ -49,6 +54,16 @@ stages:
         command: buildAndPush
         repository: $(ordersapigwImageRepository)
         dockerfile: $(ordersapigwDockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        buildContext: $(System.DefaultWorkingDirectory)
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Build and push BaseAPIGW image
+      inputs:
+        command: buildAndPush
+        repository: $(baseapiImageRepository)
+        dockerfile: $(baseapiDockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         buildContext: $(System.DefaultWorkingDirectory)
         tags: |
