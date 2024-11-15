@@ -22,7 +22,8 @@ variables:
   baseapiImageRepository: 'baseapigw'
   baseapiDockerfilePath: 'BaseAPIGW/Dockerfile'
 
-
+  authenticationapiImageRepository: 'authenticationapi'
+  authenticationapiDockerfilePath: 'AuthenticationApi/Dockerfile'
 
   tag: '$(Build.BuildId)'
 
@@ -64,6 +65,16 @@ stages:
         command: buildAndPush
         repository: $(baseapiImageRepository)
         dockerfile: $(baseapiDockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        buildContext: $(System.DefaultWorkingDirectory)
+        tags: |
+          $(tag)
+    - task: Docker@2
+      displayName: Build and push AuthenticationAPI image
+      inputs:
+        command: buildAndPush
+        repository: $(authenticationapiImageRepository)
+        dockerfile: $(authenticationapiDockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         buildContext: $(System.DefaultWorkingDirectory)
         tags: |
