@@ -25,7 +25,7 @@ variables:
   authenticationapiImageRepository: 'authenticationapi'
   authenticationapiDockerfilePath: 'AuthenticationApi/Dockerfile'
 
-  tag: '$(Build.BuildId)'
+  tag: 'latest'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
